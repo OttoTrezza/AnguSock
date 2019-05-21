@@ -8,11 +8,13 @@ import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
 import { ChatComponent } from './component/chat/chat.component';
 import { FormsModule } from '@angular/forms';
+import { ChatService } from './services/chat.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ChatComponent
+    ChatComponent,
+    ChatService
   ],
   imports: [
     BrowserModule,
