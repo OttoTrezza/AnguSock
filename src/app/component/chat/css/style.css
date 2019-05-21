@@ -70,15 +70,15 @@ File: scss
 Global Styles 
 *******************/
 
-@import url(/src/assets/scss/icons/font-awesome/css/font-awesome.min.css);
-@import url(/src/assets/scss/icons/simple-line-icons/css/simple-line-icons.css);
-@import url(/src/assets/scss/icons/weather-icons/css/weather-icons.min.css);
-@import url(/src/assets/scss/icons/linea-icons/linea.css);
-@import url(/src/assets/scss/icons/themify-icons/themify-icons.css);
-@import url(/src/assets/scss/icons/flag-icon-css/flag-icon.min.css);
-@import url(/src/assets/scss/icons/material-design-iconic-font/css/materialdesignicons.min.css);
-@import url(/src/app/component/chat/css/spinners.css);
-@import url(/src/app/component/chat/css/animate.css);
+@import url("/src/assets/scss/icons/font-awesome/css/font-awesome.min.css");
+@import url("/src/assets/scss/icons/simple-line-icons/css/simple-line-icons.css");
+@import url("/src/assets/scss/icons/weather-icons/css/weather-icons.min.css");
+@import url("/src/assets/scss/icons/linea-icons/linea.css");
+@import url("/src/assets/scss/icons/themify-icons/themify-icons.css");
+@import url("/src/assets/scss/icons/flag-icon-css/flag-icon.min.css");
+@import url("/src/assets/scss/icons/material-design-iconic-font/css/materialdesignicons.min.css");
+@import url("/src/app/component/chat/css/spinners.css");
+@import url("/src/app/component/chat/css/animate.css");
 * {
     outline: none;
 }
