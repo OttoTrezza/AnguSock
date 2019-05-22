@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
 import { Subscription } from 'rxjs';
-// import { $ } from 'protractor';
 
 @Component({
   selector: 'app-chat',
@@ -24,6 +23,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     sala: this.params.get('sala')
   };
 
+
   // divUsuarios = document.getElementById('divUsuarios');
   // formEnviar = document.getElementById('formEnviar');
   // txtMensaje = document.getElementById('txtMensaje');
@@ -33,6 +33,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     ) {  }
 
   ngOnInit() {
+    console.log(this.usuario);
     this.chatService.entrarChat( this.usuario);
    // this.elemento = document.getElementById('chat-mensajes');
     this.mensajesSubcription = this.chatService.getMessages().subscribe( msg => {

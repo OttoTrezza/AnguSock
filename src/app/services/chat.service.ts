@@ -73,7 +73,7 @@ export class ChatService {
     for (let i = 0; i < personas.length; i++) {
         html += `<li>`;
         // tslint:disable-next-line:max-line-length
-        html += `<a data-id= "${personas[i].id}" href="javascript:void(0)"><img src="assets/images/users/1.jpg" alt="user-img" class="img-circle"> <span> ${personas[i].nombre} <small class="text-success">online</small></span></a>`;
+        html += `<a data-id= "${personas[i].id}" href="javascript:void(0)"><img src="../assets/images/users/1.jpg" alt="user-img" class="img-circle"> <span> ${personas[i].nombre} <small class="text-success">online</small></span></a>`;
         html += `</li>`;
       }
     this.divUsuarios.innerHTML = html;
