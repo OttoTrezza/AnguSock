@@ -28,7 +28,7 @@ constructor(
 //        name: forma.value.name,
 //        sala: forma.value.sala
 //      };
-   this.router.navigate(['/chat'], { queryParams: { nombre: forma.value.name, sala: forma.value.sala } });
+   this.router.navigate(['/chat'], { queryParams: {nombre: forma.value.name, sala: forma.value.sala } } );
 
   }
 }
