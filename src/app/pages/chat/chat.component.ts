@@ -14,39 +14,45 @@ import { ActivatedRoute } from '@angular/router';
 export class ChatComponent implements OnInit, OnDestroy {
 
   texto: '';
-
+  nombre: '';
+  sala: '';
   mensajesSubcription: Subscription;
-
+  elemento: HTMLElement;
   mensajes: any[] = [];
 
-  params = new URLSearchParams(window.location.search);
-
-  usuario = {
-    nombre: '',
-    sala: ''
-  };
-
+  // params = new URLSearchParams(window.location.search);
 
   divUsuarios = document.getElementById('divUsuarios');
   formEnviar = document.getElementById('formEnviar');
   txtMensaje = document.getElementById('txtMensaje');
   divChatbox = document.getElementById('divChatbox');
   constructor(
-    public chatService: ChatService,
-    private routel: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    public chatService: ChatService
     ) {  }
-
+      usuario = {
+      nombre: '',
+      sala: ''
+    };
   ngOnInit() {
-      this.usuario.nombre = this.routel.snapshot.paramMap.get('nombre');
-      this.usuario.sala = this.routel.snapshot.paramMap.get('sala');
-    console.log('ngoninitchatcomponente', this.usuario.nombre);
-    this.chatService.entrarChat( this.usuario);
-   // this.elemento = document.getElementById('chat-mensajes');
+    this.activatedRoute.queryParams
+                  .subscribe( queryParams => {
+                console.log(queryParams);
+                this.nombre = queryParams.nombre;
+                this.sala = queryParams.sala;
+              });
+    console.log('ngoninitchatcomponente', this.nombre);
+    console.log('ngoninitchatcomponente', this.sala);
+        this.usuario.nombre = this.nombre;
+        this.usuario.sala = this.sala;
+
+    this.chatService.entrarChat(this.usuario);
+    this.elemento = document.getElementById('chat-mensajes');
     this.mensajesSubcription = this.chatService.getMessages().subscribe( msg => {
       this.mensajes.push(msg);
-  //    setTimeout(  () => {
-  //      this.elemento.scrollTop = this.elemento.scrollHeight;
-  //    }, 50);
+     setTimeout(  () => {
+       this.elemento.scrollTop = this.elemento.scrollHeight;
+     }, 50);
     });
 
   }
