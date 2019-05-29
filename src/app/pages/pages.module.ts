@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 
 
 // import { PagesComponent } from './pages.component';
-import { ChatComponent } from './chat/chat.component';
+import { ChatComponent } from '../pages/chat/chat.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 

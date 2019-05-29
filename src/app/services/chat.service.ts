@@ -6,32 +6,32 @@
 
 import { Injectable } from '@angular/core';
 import { WebsocketService } from './websocket.service';
+import { RendService } from './rend.service';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class ChatService {
-  params = new URLSearchParams(window.location.search);
 
-  usuario = {
-    name: this.params.get('name'),
-    sala: this.params.get('sala')
-  };
+  // elemento: HTMLElement;
+  mensajes: any[] = [];
+
 
   constructor(
     public wsServices: WebsocketService,
+    public rendService: RendService
     ) { }
 
-  entrarChat(usuario: any) {
+    entrarChat(usuario: any) {
     const payload = {
       nombre: usuario.nombre,
       sala: usuario.sala
     };
-    this.wsServices.emit( 'entrarChat', payload, function( resp ) {
-      console.log('chatserviceemitentrarchat', resp ); // Deberia devolver lista de usuarios en esa sala
-      this.chatComponent.renderizarUsuarios( resp ); // resp = lista de usuarios
+    this.wsServices.emit( 'entrarChat', payload, function( callback: any ) {
+      console.log('chatserviceemitentrarchat', callback ); // Deberia devolver lista de usuarios en esa sala
     });
+    this.rendService.renderizarUsuarios( payload );  // resp = lista de usuarios
   }
 
   sendMessage( mensaje: string ) {
@@ -40,12 +40,15 @@ export class ChatService {
       cuerpo: mensaje
     };
     this.wsServices.emit( 'crearMensaje', payload, function( mensaje1: string ) {
-      this.chatComponent.renderizarMensajes(mensaje1);
-      this.scrollBottom();
+      this.rendService.renderizarMensajes(mensaje1);
+      this.rendService.scrollBottom();
       });
   }
   getMessages() {
     return this.wsServices.listen( 'mensaje-nuevo');
+  }
+  getMessagesPrivate() {
+    return this.wsServices.listen( 'mensaje-privado');
   }
   sendPrivMessage(mensaje: string, data: any) {
     const payload = {
@@ -54,9 +57,8 @@ export class ChatService {
     };
     this.wsServices.emit( 'mensajePrivado', payload );
   }
-
+}
   // listaPersona( personas: any) {
   //   renderizarUsuarios( personas );
   // }
-
-}
+  // Funciones para renderizar usuarios

@@ -48,12 +48,20 @@
                             <div class="chat-main-box">
                                 <!-- .chat-left-panel -->
                                 <div class="chat-left-aside">
-                                    <div class="open-panel"><i class="ti-angle-right"></i></div>
+                                    <div class="open-panel">
+                                        <i class="ti-angle-right"></i>
+                                    </div>
                                     <div class="chat-left-inner">
                                         <div class="form-material">
                                             <input class="form-control p-20" type="text" placeholder="Buscar Contacto">
                                         </div>
-                                        <ul class="chatonline style-none" id="divUsuarios"> </ul>
+                                        <ul class="chatonline style-none" id="divUsuarios">
+                                            <a href="javascript:void(0)" class="active"> Chat de <span> {{personas.sala}} </span></a>
+
+                                            <li *ngFor="let persona of personas">
+                                                <a data-id="${personas._id}" href="javascript:void(0)"><img src="../../../assets/images/users/1.jpg" alt="user-img" class="img-circle"> <span> personas[i].nombre <small class="text-success">online</small></span></a>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                                 <!-- .chat-left-panel -->
@@ -133,14 +141,13 @@
     <!-- End Wrapper -->
     <!-- ============================================================== -->
 
+</body>
 
 
 
 
+<script src="../../../assets/plugins/jquery/jquery.min.js"></script>
+<script src="socket.io/socket.io.js"></script>
 
-    <script src="../../../assets/plugins/jquery/jquery.min.js"></script>
-    <script src="socket.io/socket.io.js"></script>
-
-    <!-- <script src="../../services/socket-chat-jquery.js"></script> -->
-    <script src="../../services/chat.service.ts"></script>
-    <script src="../chat/chat.component.ts
+<!-- <script src="../../services/socket-chat-jquery.js"></script> -->
+<script src="../../services/chat.service.ts"></script>
