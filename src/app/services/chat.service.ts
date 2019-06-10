@@ -6,43 +6,47 @@
 
 import { Injectable } from '@angular/core';
 import { WebsocketService } from './websocket.service';
-import { RendService } from './rend.service';
+// import { RendService } from './rend.service';
+import { Persona } from '../models/persona.model';
+
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class ChatService {
-
-  // elemento: HTMLElement;
-  mensajes: any[] = [];
-
-
+mensaje: any;
+persona: Persona;
   constructor(
     public wsServices: WebsocketService,
-    public rendService: RendService
+
     ) { }
 
-    entrarChat(usuario: any) {
-    const payload = {
-      nombre: usuario.nombre,
-      sala: usuario.sala
-    };
-    this.wsServices.emit( 'entrarChat', payload, function( callback: any ) {
-      console.log('chatserviceemitentrarchat', callback ); // Deberia devolver lista de usuarios en esa sala
+    entrarChat(persona: Persona, callback: any) {
+      const payload = {
+        nombre: persona.nombre,
+        sala: persona.sala
+      };
+      console.log('per', persona);
+      this.wsServices.emit('entrarChat', payload, (personas: Persona) => {
+      console.log('cahtserv', personas);
+        callback(personas);
+      // console.log('personas en sala', callback.personas); // personas en la sala
     });
-    this.rendService.renderizarUsuarios( payload );  // resp = lista de usuarios
   }
-
-  sendMessage( mensaje: string ) {
+  sendMessage( mensaje: any, persona: Persona, callback1: any ) {
     const payload = {
-      de: 'Fernando',
-      cuerpo: mensaje
+      persona: persona,
+      mensaje: mensaje
     };
-    this.wsServices.emit( 'crearMensaje', payload, function( mensaje1: string ) {
-      this.rendService.renderizarMensajes(mensaje1);
-      this.rendService.scrollBottom();
-      });
+    this.wsServices.emit('crearMensaje', payload, (callback: any ) => {
+       //  this.rendService.scrollBottom();
+
+     callback1.persona = callback.persona;
+     callback1.mensaje = callback.mensaje;
+     console.log('chatserv.el.callback', callback1);
+    });
+
   }
   getMessages() {
     return this.wsServices.listen( 'mensaje-nuevo');

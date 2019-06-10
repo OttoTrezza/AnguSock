@@ -10,7 +10,7 @@ declare function init_plugins();
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-ingreso: string;
+
 
 constructor(
     public router: Router

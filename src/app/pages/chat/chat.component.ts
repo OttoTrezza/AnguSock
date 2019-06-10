@@ -1,13 +1,13 @@
 
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { Persona } from '../../models/persona.model';
 
 
-declare function init_plugins();
+// declare function init_plugins();
 
 @Component({
   selector: 'app-chat',
@@ -16,56 +16,48 @@ declare function init_plugins();
 })
 
 export class ChatComponent implements OnInit, OnDestroy {
-
   forma: FormGroup;
-  texto: '';
-  nombre: '';
-  sala: '';
   mensajesSubcription: Subscription;
   elemento: HTMLElement;
-  mensajes: any[] = [];
-  personas: Persona[] = [];
-
+  texto: '';
+  @Input() mensajes: any[] = [];
+  @Input() mensaje: any;
+  @Input() personas: Persona[] = [];
+  @Input() persona: Persona;
+  @Input() hora: string;
 
   constructor(
 
     private activatedRoute: ActivatedRoute,
-    public chatService: ChatService
-
+    public chatService: ChatService,
     ) {  }
-      usuario = {
-      nombre: '',
-      sala: ''
-    };
-
 
   ngOnInit() {
-    // init_plugins();
-    // this.forma = new FormGroup({
-    //   busqueda: new FormControl(null),
-    // });
-
     this.activatedRoute.queryParams
                   .subscribe( queryParams => {
-                // console.log(queryParams);
-                this.nombre = queryParams.nombre;
-                this.sala = queryParams.sala;
-              });
-        this.usuario.nombre = this.nombre;
-        this.usuario.sala = this.sala;
-        console.log('ngoninitchatcomponente', this.nombre);
-        console.log('ngoninitchatcomponente', this.sala);
+                  const persona = new Persona ('', queryParams.nombre, queryParams.sala );
+                  this.persona = persona;
+                  // console.log('ngoninitchatcomponente1', persona);
+                  });
+    // console.log('ngoninitchatcomponente', this.persona);
+    this.chatService.entrarChat(this.persona, (personas) => {
+      // personas = personas;
+      this.personas = personas;
+      console.log('sdfsd', personas);
+    });
 
-    this.chatService.entrarChat(this.usuario);
     this.elemento = document.getElementById('chat-mensajes');
     this.mensajesSubcription = this.chatService.getMessages().subscribe( msg => {
       this.mensajes.push(msg);
-     setTimeout(  () => {
+       setTimeout(  () => {
        this.elemento.scrollTop = this.elemento.scrollHeight;
-     }, 50);
+      }, 50);
     });
   }
-
+  // renderizarUsuarios( personas: any ) {
+  //   this.personas = personas;
+  //   //   console.log('renderizarusuariospersonas', personas);
+  // }
 
   ngOnDestroy() {
     this.mensajesSubcription.unsubscribe();
@@ -76,7 +68,16 @@ export class ChatComponent implements OnInit, OnDestroy {
     if ( this.texto.trim().length === 0) {
       return;
     }
-    this.chatService.sendMessage(this.texto);
+    this.chatService.sendMessage(this.texto, this.persona, (mensaje: any, persona: Persona) => {
+
+      const fecha = new Date(mensaje.fecha);
+      const hora: string = fecha.getHours() + ':' + fecha.getMinutes();
+      this.mensaje.de = mensaje.nombre; // es la persona que manda el mensaje
+      this.mensaje.a = persona.sala;
+      this.mensaje.mensaje = mensaje.mensaje;
+      this.hora = hora;
+      console.log('éntro', persona.nombre, mensaje, mensaje.de, mensaje.a, hora);
+    });
     this.texto = '';
   }
 
@@ -84,7 +85,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     if ( this.texto.trim().length === 0) {
       return;
     }
-    this.chatService.sendPrivMessage(this.texto, this.usuario);
+    this.chatService.sendPrivMessage(this.texto, this.persona);
     this.texto = '';
   }
 }
