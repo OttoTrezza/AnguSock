@@ -39,14 +39,16 @@ persona: Persona;
       persona: persona,
       mensaje: mensaje
     };
-    this.wsServices.emit('crearMensaje', payload, (callback: any ) => {
+
+      this.wsServices.emit('crearMensaje', payload, (mensaje1: any, persona1: Persona ) => {
        //  this.rendService.scrollBottom();
+      callback1(mensaje1, persona1);
+    console.log('chatserv.el.callback1', callback1.nombre, callback1.mensaje  );
+    console.log('chatserv.el.callback', mensaje1, persona1);
+     // callback1.mensaje = mensaje1;
+     // callback1.persona = persona1;
 
-     callback1.persona = callback.persona;
-     callback1.mensaje = callback.mensaje;
-     console.log('chatserv.el.callback', callback1);
     });
-
   }
   getMessages() {
     return this.wsServices.listen( 'mensaje-nuevo');

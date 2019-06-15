@@ -25,6 +25,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   @Input() personas: Persona[] = [];
   @Input() persona: Persona;
   @Input() hora: string;
+  @Input() de: string;
 
   constructor(
 
@@ -68,15 +69,17 @@ export class ChatComponent implements OnInit, OnDestroy {
     if ( this.texto.trim().length === 0) {
       return;
     }
-    this.chatService.sendMessage(this.texto, this.persona, (mensaje: any, persona: Persona) => {
+    this.chatService.sendMessage(this.texto, this.persona, (callback) => {
 
-      const fecha = new Date(mensaje.fecha);
+      const fecha = new Date(callback.mensaje.fecha);
       const hora: string = fecha.getHours() + ':' + fecha.getMinutes();
-      this.mensaje.de = mensaje.nombre; // es la persona que manda el mensaje
-      this.mensaje.a = persona.sala;
-      this.mensaje.mensaje = mensaje.mensaje;
-      this.hora = hora;
-      console.log('éntro', persona.nombre, mensaje, mensaje.de, mensaje.a, hora);
+      // this.mensaje.de = callback.persona; // es la persona que manda el mensaje
+      // this.mensaje.a = callback.persona.sala;
+      // this.mensaje.nombre = callback.mensaje;
+      this.de = callback.nombre;
+      this.mensaje = callback.mensaje;
+      this.hora = callback.fecha;
+      console.log('éntro', callback.nombre, callback.mensaje, callback.fecha);
     });
     this.texto = '';
   }

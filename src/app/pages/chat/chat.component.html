@@ -77,12 +77,12 @@
                                     <div class="chat-rbox">
                                         <ul class="chat-list p-20" id="divChatbox">
 
-                                            <a *ngIf="persona" adminClass="danger">
+                                            <a *ngIf="persona.nombre === de" adminClass="danger">
 
                                                 <li class="reverse">
                                                     <div class="chat-content">
                                                         <h5> {{persona.nombre}} </h5>
-                                                        <div class="box bg-light-inverse"> {{mensaje.mensaje}} .. </div>
+                                                        <div class="box bg-light-inverse"> {{mensaje}} </div>
                                                     </div>
                                                     <div class="chat-img"><img src="../../../assets/images/users/5.jpg" alt="user" /></div>
                                                     <div class="chat-time"> {{hora}} </div>
@@ -92,8 +92,8 @@
                                                 <!-- let adminClass = info; if (mensaje.nombre === 'Administrador') { adminClass = 'danger' } -->
                                                 <div class="chat-img"><img src="../../../assets/images/users/1.jpg" alt="user" /></div>
                                                 <div class="chat-content">
-                                                    <h5> {{mensaje.de}} </h5>
-                                                    <div class="box bg-light"> {{mensaje.mensaje}} </div>
+                                                    <h5> {{de}} </h5>
+                                                    <div class="box bg-light"> {{mensaje}} </div>
                                                 </div>
                                                 <div class="chat-time"> AHORA </div>
                                             </li>
