@@ -1,31 +1,43 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { AppRoutingModule } from './app-routing.module';
 
-import {SocketIoModule, SocketIoConfig} from 'ngx-socket-io';
+// sockets
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+
 const config: SocketIoConfig = {
-  url: environment.wsUrl, options: {}
+  url: environment.wsUrl , options: {}
 };
 
-import { APP_ROUTES } from './app.routes';
+
+
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
-import { FormsModule } from '@angular/forms';
-import { LoginComponent } from './component/login/login.component';
-import { PagesComponent } from './pages/pages.component';
-import { SharedModule } from './shared/shared.module';
+import { FooterComponent } from './component/footer/footer.component';
+import { ChatComponent } from './component/chat/chat.component';
+import { ListaUsuariosComponent } from './component/lista-usuarios/lista-usuarios.component';
+import { LoginComponent } from './pages/login/login.component';
+import { MensajesComponent } from './pages/mensajes/mensajes.component';
+
+// components/lista-usuarios/lista-usuarios.component
+
+
 
 @NgModule({
   declarations: [
     AppComponent,
+    FooterComponent,
+    ChatComponent,
+    ListaUsuariosComponent,
     LoginComponent,
-    PagesComponent
+    MensajesComponent
   ],
   imports: [
     BrowserModule,
-    APP_ROUTES,
     FormsModule,
-    SharedModule,
-    SocketIoModule.forRoot(config)
+    SocketIoModule.forRoot(config),
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
