@@ -17,6 +17,7 @@ import { Persona } from '../models/persona.model';
 export class ChatService {
 mensaje: any;
 persona: Persona;
+personas: Persona[];
   constructor(
     public wsServices: WebsocketService,
 
@@ -28,43 +29,56 @@ persona: Persona;
         sala: persona.sala
       };
       console.log('per', persona);
-      this.wsServices.emit('entrarChat', payload, (personas: Persona) => {
-      console.log('cahtserv', personas);
-        callback(personas);
-      // console.log('personas en sala', callback.personas); // personas en la sala
-    });
-  }
-  sendMessage( mensaje: any, persona: Persona, callback1: any ) {
-    const payload = {
-      persona: persona,
-      mensaje: mensaje
-    };
+      this.wsServices.emit('entrarChat', payload, (personas: Persona[]) => {
+        console.log('cahtserv', personas);
+        this.personas = personas;
+          callback(personas);
+        // console.log('personas en sala', callback.personas); // personas en la sala
+      });
+    }
+    sendMessage( mensaje: any, persona: Persona, callback1: any ) {
+      const payload = {
+        persona: persona,
+        mensaje: mensaje
+      };
 
       this.wsServices.emit('crearMensaje', payload, (mensaje1: any, persona1: Persona ) => {
        //  this.rendService.scrollBottom();
       callback1(mensaje1, persona1);
-    console.log('chatserv.el.callback1', callback1.nombre, callback1.mensaje  );
-    console.log('chatserv.el.callback', mensaje1, persona1);
-     // callback1.mensaje = mensaje1;
-     // callback1.persona = persona1;
+      console.log('chatserv.el.callback1', callback1.nombre, callback1.mensaje  );
+      console.log('chatserv.el.callback', mensaje1, persona1);
+      // callback1.mensaje = mensaje1;
+      // callback1.persona = persona1;
+      });
+    }
+    getMessages() {
+      return this.wsServices.listen( 'mensaje-nuevo');
+      console.log(this.wsServices.listen( 'mensaje-nuevo'));
+    }
+    getMessagesPrivate() {
+      return this.wsServices.listen( 'mensaje-privado');
+    }
+    getlistaPersona() {
+      return this.wsServices.listen('listaPersona');
+    }
+    getcrearMensaje(personas) {
+      return this.wsServices.listen('crearMensaje', (personas: Persona[]) => {
 
-    });
+      });
+      console.log('getcrearmensaje', this.wsServices.listen('crearMensaje'));
+      console.log('hola');
+
   }
-  getMessages() {
-    return this.wsServices.listen( 'mensaje-nuevo');
-  }
-  getMessagesPrivate() {
-    return this.wsServices.listen( 'mensaje-privado');
-  }
-  sendPrivMessage(mensaje: string, data: any) {
-    const payload = {
-      mensaje: mensaje,
-      para: data.sala
-    };
-    this.wsServices.emit( 'mensajePrivado', payload );
-  }
+    sendPrivMessage(mensaje: string, data: any) {
+      const payload = {
+        mensaje: mensaje,
+        para: data.sala
+      };
+      this.wsServices.emit( 'mensajePrivado', payload );
+    }
+    diconnect(persona: Persona) {
+      this.wsServices.emit('disconnect', persona);
+    }
+
 }
-  // listaPersona( personas: any) {
-  //   renderizarUsuarios( personas );
-  // }
-  // Funciones para renderizar usuarios
+

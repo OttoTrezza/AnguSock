@@ -17,6 +17,7 @@ import { Persona } from '../../models/persona.model';
 
 export class ChatComponent implements OnInit, OnDestroy {
   forma: FormGroup;
+  listaSubscription: Subscription;
   mensajesSubcription: Subscription;
   elemento: HTMLElement;
   texto: '';
@@ -48,6 +49,10 @@ export class ChatComponent implements OnInit, OnDestroy {
     });
 
     this.elemento = document.getElementById('chat-mensajes');
+    this.listaSubscription = this.chatService.getlistaPersona().subscribe( (personas: Persona[]) => {
+    this.personas = personas;
+    });
+
     this.mensajesSubcription = this.chatService.getMessages().subscribe( msg => {
       this.mensajes.push(msg);
        setTimeout(  () => {
@@ -55,13 +60,10 @@ export class ChatComponent implements OnInit, OnDestroy {
       }, 50);
     });
   }
-  // renderizarUsuarios( personas: any ) {
-  //   this.personas = personas;
-  //   //   console.log('renderizarusuariospersonas', personas);
-  // }
-
   ngOnDestroy() {
     this.mensajesSubcription.unsubscribe();
+    this.listaSubscription.unsubscribe();
+    this.chatService.diconnect(this.persona);
   }
 
 
@@ -91,4 +93,9 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.chatService.sendPrivMessage(this.texto, this.persona);
     this.texto = '';
   }
-}
+
+  listaPersona() {
+  // this.chatService.getlistaPersona();
+      return this.chatService.getlistaPersona();
+    }
+  }
